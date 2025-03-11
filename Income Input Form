@@ -1,0 +1,44 @@
+Private Sub CommandButton2_Click()
+    Dim ws As Worksheet
+    Dim tbl As ListObject
+    Dim newRow As ListRow
+    Dim inputDate As String
+    Dim formattedDate As String
+    Dim parsedDate As Date
+    Dim monthYearFormat As String
+    
+    Set ws = ThisWorkbook.Sheets("Income Tracker")
+    Set tbl = ws.ListObjects("IncomeTable")
+    
+    inputDate = TextBox1.Value
+    
+    ' Check if the input date is a valid date
+    If IsDate(inputDate) Then
+        parsedDate = CDate(inputDate)
+        formattedDate = Format(parsedDate, "dd/mm/yyyy")
+        monthYearFormat = Format(parsedDate, "mm/yyyy")
+        
+        ' Check if TextBox3 is greater than 0
+        If Val(TextBox3.Value) > 0 Then
+            Set newRow = tbl.ListRows.Add
+            newRow.Range(1, 1).Value = formattedDate
+            newRow.Range(1, 2).Value = TextBox2.Value
+            newRow.Range(1, 3).Value = TextBox4.Value
+            newRow.Range(1, 4).Value = TextBox3.Value
+            newRow.Range(1, 5).Value = monthYearFormat
+        Else
+            MsgBox "Amount must be greater than 0."
+            Exit Sub
+        End If
+        
+    Else
+        MsgBox "Invalid date format. Please use dd/mm/yyyy."
+        TextBox1.Value = ""
+        Exit Sub
+    End If
+
+    TextBox1.Value = ""
+    TextBox2.Value = ""
+    TextBox3.Value = ""
+    TextBox4.Value = ""
+End Sub

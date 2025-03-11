@@ -1,0 +1,25 @@
+Private Sub CommandButton2_Click()
+
+    Dim ws As Worksheet
+    Dim txtBox1 As Double
+    Dim txtBox2 As Double
+    Dim txtBox3 As Double
+    
+    Set ws = ThisWorkbook.Sheets("Data Processing")
+    
+    txtBox1 = Val(TextBox1.Value)
+    txtBox2 = Val(TextBox2.Value)
+    txtBox3 = Val(TextBox3.Value)
+    
+    If txtBox1 > 0 And txtBox2 > 0 And txtBox3 > 0 Then
+        ws.Range("B15").Value = txtBox1
+        ws.Range("B16").Value = txtBox2
+        ws.Range("B18").Value = txtBox3
+        
+        MsgBox "Goals have been updated"
+        Unload Me
+    Else
+        MsgBox "Please enter valid numbers greater than 0 in all text boxes."
+    End If
+
+End Sub

@@ -1,0 +1,53 @@
+Private Sub CommandButton2_Click()
+
+    Dim ws As Worksheet
+    Dim tbl As ListObject
+    Dim row As ListRow
+    Dim i As Integer
+    Dim columnCValue As String
+    Dim columnDValue As Double
+    Dim columnHValue As Double
+    Dim columnIValue As Double
+    Dim columnJValue As Double
+    Dim foundMatch As Boolean ' Flag to track if a match was found
+    
+    Set ws = ThisWorkbook.Sheets("Investment Tracker")
+    Set tbl = ws.ListObjects("InvestmentTable")
+    
+    
+    columnCValue = TextBox1.Value
+    columnHValue = Val(TextBox2.Value)
+
+    
+    If columnHValue < 0 Then
+        MsgBox "Value in TextBox2 should be greater than or equal to 0.", vbExclamation
+        Exit Sub
+    End If
+
+    
+    
+    foundMatch = False
+    
+    For i = 1 To tbl.ListRows.Count
+        ' If investment name value matches the value in TextBox1
+        If tbl.DataBodyRange(i, 3).Value = columnCValue Then
+            foundMatch = True
+            tbl.DataBodyRange(i, 8).Value = columnHValue
+            columnDValue = tbl.DataBodyRange(i, 4).Value
+            columnIValue = columnDValue * columnHValue
+            tbl.DataBodyRange(i, 9).Value = columnIValue
+            
+            columnFValue = tbl.DataBodyRange(i, 6).Value
+            columnJValue = ((columnIValue - columnFValue) / columnFValue)
+            tbl.DataBodyRange(i, 10).Value = columnJValue
+        End If
+    Next i
+    
+    ' If no matching rows were found
+    If Not foundMatch Then
+        MsgBox "Name not found, ensure spelling is correct.", vbExclamation
+    Else
+        MsgBox "Investment update completed", vbInformation
+    End If
+
+End Sub
