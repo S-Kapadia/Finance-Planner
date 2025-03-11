@@ -1,0 +1,23 @@
+
+Private Sub CommandButton2_Click()
+
+    Dim ws As Worksheet
+    Dim inflationValue As Double
+    Dim inflationMultiplier As Double
+    Set ws = ThisWorkbook.Sheets("Data Processing")
+    If IsNumeric(TextBox1.Value) Then
+        inflationValue = CDbl(TextBox1.Value)
+        
+        ' Calculate the inflation multiplier
+        inflationMultiplier = (inflationValue + 100) / 100
+        
+        ws.Range("B15").Value = ws.Range("B15").Value * inflationMultiplier
+        ws.Range("B16").Value = ws.Range("B16").Value * inflationMultiplier
+        
+        MsgBox "Value of Goals has been adjusted"
+        
+    Else
+        MsgBox "Please enter a valid value for inflation"
+    End If
+
+End Sub
