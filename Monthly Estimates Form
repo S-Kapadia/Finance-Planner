@@ -1,0 +1,52 @@
+Private Sub CommandButton2_Click()
+
+    Dim ws As Worksheet
+    Dim dataSheet As Worksheet
+    Dim monthlyIncome As Double
+    Dim saveAmount As Double
+    Dim investAmount As Double
+    Dim remainingAmount As Double
+    Dim rowIndex As Integer
+    Dim i As Integer
+    Dim percentage As Double
+    Dim inputDate As String
+    Dim formattedDate As String
+
+    Set ws = ThisWorkbook.Sheets("Monthly Spending Recommendation")
+    Set dataSheet = ThisWorkbook.Sheets("Data Processing")
+    
+    ' Validate the date format for mm/yyyy
+    inputDate = TextBox1.Value
+    If Not IsDate("01/" & inputDate) Then
+        MsgBox "Please enter a valid date in the format mm/yyyy."
+        TextBox1.Value = ""
+        Exit Sub
+    End If
+    
+    
+    formattedDate = Format(CDate("01/" & inputDate), "mm/yyyy")
+    
+    
+    monthlyIncome = Val(TextBox2.Value)
+    saveAmount = (Val(TextBox3.Value) / 100) * monthlyIncome
+    investAmount = (Val(TextBox4.Value) / 100) * monthlyIncome
+    remainingAmount = monthlyIncome - saveAmount - investAmount
+    
+    
+    ws.Range("C3").Value = formattedDate
+    ws.Range("B5").Value = saveAmount
+
+    
+    rowIndex = 6
+    For i = 2 To 9
+        percentage = dataSheet.Range("B" & i).Value / 100
+        ws.Range("B" & rowIndex).Value = remainingAmount * percentage
+        rowIndex = rowIndex + 1
+    Next i
+    
+    
+    ws.Range("B" & rowIndex).Value = investAmount
+    
+    MsgBox "Monthly spending recommendations and investment amount have been calculated successfully."
+
+End Sub
