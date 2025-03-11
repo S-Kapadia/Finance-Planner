@@ -1,0 +1,49 @@
+Private Sub CommandButton1_Click()
+    TextBox1.Value = ""
+    TextBox2.Value = ""
+    TextBox3.Value = ""
+    TextBox4.Value = ""
+    TextBox5.Value = ""
+    TextBox6.Value = ""
+    TextBox7.Value = ""
+    TextBox8.Value = ""
+End Sub
+
+Private Sub CommandButton2_Click()
+
+    Dim ws As Worksheet
+    Dim values(1 To 8) As Double
+    Dim i As Integer
+    Dim total As Double
+    Dim tolerance As Double
+    
+    ' check for precision error
+    tolerance = 0.01
+    Set ws = ThisWorkbook.Sheets("Data Processing")
+    values(1) = Val(TextBox1.Value)
+    values(2) = Val(TextBox2.Value)
+    values(3) = Val(TextBox3.Value)
+    values(4) = Val(TextBox4.Value)
+    values(5) = Val(TextBox5.Value)
+    values(6) = Val(TextBox6.Value)
+    values(7) = Val(TextBox7.Value)
+    values(8) = Val(TextBox8.Value)
+    total = 0
+    For i = 1 To 8
+        If values(i) <= 0 Or values(i) >= 100 Then
+            MsgBox "Each value must be greater than or equal to 0 and less than or equal to 100."
+            Exit Sub
+        End If
+        total = total + values(i) ' Test to make sure the sum is 100% or else the entire ratio goes kaboom
+    Next i
+    If Abs(total - 100) > tolerance Then
+        MsgBox "The sum of all values must equal 100."
+        Exit Sub
+    End If
+    For i = 1 To 8
+        ws.Range("B" & (i + 1)).Value = values(i)
+    Next i
+    
+    MsgBox "CPI category values have been updated"
+
+End Sub
